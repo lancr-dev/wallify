@@ -34,17 +34,12 @@ const wallifyUserSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-wallifyUserSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
-    return next();
-  }
+wallifyUserSchema.pre('save', async function () {
+  const SALT_ROUNDS = parseInt(process.env.SALT_ROUNDS, 10) || 10;
 
-  try {
-    this.password = await bcrypt.hash(this.password, process.env.SALT_ROUNDS);
-    next();
-  } catch (error) {
-    next(error);
-  }
+  if (!this.isModified('password')) return;
+
+  this.password = await bcrypt.hash(this.password, SALT_ROUNDS);
 });
 
 const User = mongoose.model('WallifyUser', wallifyUserSchema);

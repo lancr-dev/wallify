@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt';
 import User from '../models/WallifyUser.js';
 
 export const register = async (req, res) => {
