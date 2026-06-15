@@ -5,11 +5,13 @@ const wallifyNoteSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
+      trim: true,
     },
 
     content: {
       type: String,
       required: true,
+      trime: true,
     },
   },
   { timestamps: true },
