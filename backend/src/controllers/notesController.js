@@ -1,4 +1,4 @@
-import Note from '../models/WallifyNote';
+import Note from '../models/WallifyNote.js';
 
 export const createNote = async (req, res) => {
   try {
