@@ -43,3 +43,28 @@ export const getAllNotes = async (req, res) => {
     });
   }
 };
+
+export const getNote = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const note = await Note.findById(id);
+
+    if (!note) {
+      return res.status(404).json({
+        success: false,
+        message: 'Note not found.',
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: note,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `Error in getNote controller: ${error.message};`,
+    });
+  }
+};
