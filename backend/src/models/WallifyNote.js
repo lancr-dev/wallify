@@ -11,7 +11,13 @@ const wallifyNoteSchema = new mongoose.Schema(
     content: {
       type: String,
       required: true,
-      trime: true,
+      trim: true,
+    },
+
+    owner: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'WallifyUser',
+      required: true,
     },
   },
   { timestamps: true },

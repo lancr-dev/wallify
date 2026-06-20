@@ -2,6 +2,7 @@ import Note from '../models/WallifyNote.js';
 
 export const createNote = async (req, res) => {
   try {
+    const { id } = req.params;
     const { title, content } = req.body;
 
     if (!title || !content) {
@@ -14,6 +15,7 @@ export const createNote = async (req, res) => {
     const note = await Note.create({
       title,
       content,
+      owner: req.user.id,
     });
 
     return res.status(201).json({
@@ -65,6 +67,52 @@ export const getNote = async (req, res) => {
     res.status(500).json({
       success: false,
       message: `Error in getNote controller: ${error.message};`,
+    });
+  }
+};
+
+export const updateNote = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, content } = req.body;
+
+    if (!title || !content) {
+      return res.status(400).json({
+        success: false,
+        message: 'Title and Content are required.',
+      });
+    }
+
+    const note = await Note.findById(id);
+
+    if (!note) {
+      return res.status(404).json({
+        success: false,
+        message: 'Note not found.',
+      });
+    }
+
+    if (note.owner.toString() !== req.user.id && req.user.role !== 'admin') {
+      return res.status(403).json({
+        success: false,
+        message: 'Unauthorized.',
+      });
+    }
+
+    note.title = title ?? note.title;
+    note.content = content ?? note.content;
+
+    await note.save();
+
+    return res.status(200).json({
+      success: true,
+      message: 'Wallify updated successfully.',
+      data: note,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: `Error in updateNote controller: ${error.message}`,
     });
   }
 };
