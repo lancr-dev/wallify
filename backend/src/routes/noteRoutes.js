@@ -1,4 +1,5 @@
 import express from 'express';
+import { notesLimiter, rateLimit } from '../middleware/rateLimiter.js';
 import {
   createNote,
   getAllNotes,
@@ -10,11 +11,11 @@ import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.post('/create', protect, createNote);
-router.get('/', getAllNotes);
+router.post('/create', rateLimit(notesLimiter), protect, createNote);
+router.get('/', rateLimit(notesLimiter), getAllNotes);
 
-router.get('/:id', getNote);
-router.put('/:id', protect, updateNote);
-router.delete('/:id', protect, deleteNote);
+router.get('/:id', rateLimit(notesLimiter), getNote);
+router.put('/:id', rateLimit(notesLimiter), protect, updateNote);
+router.delete('/:id', rateLimit(notesLimiter), protect, deleteNote);
 
 export default router;
