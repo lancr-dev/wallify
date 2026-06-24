@@ -3,13 +3,19 @@ import redis from '../config/upstash.js';
 
 export const authLimiter = new Ratelimit({
   redis,
-  limiter: Ratelimit.slidingWindow(5, '1 m'),
+  limiter: Ratelimit.slidingWindow(10, '1 m'),
   analytics: true,
 });
 
 export const notesLimiter = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(100, '1 m'),
+  analytics: true,
+});
+
+export const userProfileLimiter = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(100, '1m'),
   analytics: true,
 });
 

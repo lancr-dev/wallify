@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import connectMongoDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import noteRoutes from './routes/noteRoutes.js';
+import userRoutes from './routes/userRoutes.js';
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use(cookieParser());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/note', noteRoutes);
+app.use('/api/profile', userRoutes);
 
 app.get('/', (req, res) => {
   res.status(200).json({
