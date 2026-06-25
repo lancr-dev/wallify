@@ -11,7 +11,7 @@ import { protect } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.post('/create', rateLimit(notesLimiter), protect, createNote);
+router.post('/', rateLimit(notesLimiter), protect, createNote);
 router.get('/', rateLimit(notesLimiter), getAllNotes);
 
 router.get('/:id', rateLimit(notesLimiter), getNote);
