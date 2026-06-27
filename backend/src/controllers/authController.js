@@ -18,7 +18,7 @@ export const register = async (req, res) => {
     if (username.length < 3) {
       return res.status(400).json({
         success: false,
-        message: 'Username characters must be atleast 3.',
+        message: 'Username characters must be at least 3.',
       });
     }
 

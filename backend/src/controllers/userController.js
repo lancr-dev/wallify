@@ -68,6 +68,22 @@ export const updateProfile = async (req, res) => {
       });
     }
 
+    const formattedEmail = email.trim().toLowerCase();
+
+    if (username.length < 3) {
+      return res.status(400).json({
+        success: false,
+        message: 'Username characters must be at least 3.',
+      });
+    }
+
+    if (!formattedEmail.endsWith('@gmail.com')) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid email format.',
+      });
+    }
+
     const user = await User.findById(req.user.id);
 
     if (!user) {
@@ -77,8 +93,17 @@ export const updateProfile = async (req, res) => {
       });
     }
 
-    user.username = username || user.username;
-    user.email = email ? email.toLowerCase() : user.email;
+    const existingUser = await User.findOne({ email: formattedEmail });
+
+    if (existingUser && existingUser._id.toString() !== req.user.id) {
+      return res.status(409).json({
+        success: false,
+        message: 'Email already exists.',
+      });
+    }
+
+    user.username = username.trim();
+    user.email = formattedEmail;
 
     await user.save();
 
@@ -108,6 +133,13 @@ export const changePassword = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: 'Current password and new password are required',
+      });
+    }
+
+    if (password.length < 5) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please use a strong password.',
       });
     }
 
