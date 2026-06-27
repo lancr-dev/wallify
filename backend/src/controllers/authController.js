@@ -13,8 +13,31 @@ export const register = async (req, res) => {
       });
     }
 
+    const formattedEmail = email.trim().toLowerCase();
+
+    if (username.length < 3) {
+      return res.status(400).json({
+        success: false,
+        message: 'Username characters must be atleast 3.',
+      });
+    }
+
+    if (!formattedEmail.endsWith('@gmail.com')) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid email format.',
+      });
+    }
+
+    if (password.length < 5) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please use a strong password.',
+      });
+    }
+
     const existingUser = await User.findOne({
-      email: email.toLowerCase(),
+      email: formattedEmail,
     });
 
     if (existingUser) {
@@ -26,7 +49,7 @@ export const register = async (req, res) => {
 
     const user = await User.create({
       username,
-      email: email.toLowerCase(),
+      email: formattedEmail,
       password,
     });
 
