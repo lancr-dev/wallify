@@ -1,8 +1,8 @@
 import Note from '../models/WallifyNote.js';
+import { createNoteService } from '../services/notesService.js';
 
 export const createNote = async (req, res) => {
   try {
-    const { id } = req.params;
     const { title, content } = req.body;
 
     if (!title || !content) {
@@ -12,7 +12,7 @@ export const createNote = async (req, res) => {
       });
     }
 
-    const note = await Note.create({
+    const note = await createNoteService({
       title,
       content,
       owner: req.user.id,
