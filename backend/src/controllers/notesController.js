@@ -3,6 +3,7 @@ import {
   createNoteService,
   getAllNotesService,
   getNoteService,
+  updateNoteService,
 } from '../services/notesService.js';
 
 export const createNote = async (req, res) => {
@@ -87,7 +88,7 @@ export const updateNote = async (req, res) => {
       });
     }
 
-    const note = await Note.findById(id);
+    const note = await updateNoteService(id, title, content, req.user);
 
     if (!note) {
       return res.status(404).json({
@@ -96,24 +97,19 @@ export const updateNote = async (req, res) => {
       });
     }
 
-    if (note.owner.toString() !== req.user.id && req.user.role !== 'admin') {
-      return res.status(403).json({
-        success: false,
-        message: 'Forbidden.',
-      });
-    }
-
-    note.title = title ?? note.title;
-    note.content = content ?? note.content;
-
-    await note.save();
-
     return res.status(200).json({
       success: true,
       message: 'Wallify updated successfully.',
       data: note,
     });
   } catch (error) {
+    if (error.message === 'FORBIDDEN') {
+      return res.status(403).json({
+        success: false,
+        message: 'Forbidden.',
+      });
+    }
+
     return res.status(500).json({
       success: false,
       message: `Error in updateNote controller: ${error.message}`,

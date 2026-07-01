@@ -21,3 +21,22 @@ export const getNoteService = async (id) => {
 
   return note;
 };
+
+export const updateNoteService = async (id, title, content, currentUser) => {
+  const note = await Note.findById(id);
+
+  if (!note) {
+    return null;
+  }
+
+  if (!note.owner.equals(currentUser.id) && currentUser.role !== 'admin') {
+    throw new Error('FORBIDDEN.');
+  }
+
+  note.title = title;
+  note.content = content;
+
+  await note.save();
+
+  return note;
+};
