@@ -1,5 +1,8 @@
 import Note from '../models/WallifyNote.js';
-import { createNoteService } from '../services/notesService.js';
+import {
+  createNoteService,
+  getAllNotesService,
+} from '../services/notesService.js';
 
 export const createNote = async (req, res) => {
   try {
@@ -32,7 +35,7 @@ export const createNote = async (req, res) => {
 
 export const getAllNotes = async (req, res) => {
   try {
-    const notes = await Note.find().sort({ createdAt: -1 });
+    const notes = await getAllNotesService();
 
     return res.status(200).json({
       success: true,
