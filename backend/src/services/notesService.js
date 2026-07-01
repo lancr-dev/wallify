@@ -40,3 +40,16 @@ export const updateNoteService = async (id, title, content, currentUser) => {
 
   return note;
 };
+
+export const deleteNoteService = async (id) => {
+  const note = await Note.findById(id);
+
+  return note;
+};
+
+/* 
+Applying DRY principle:
+export const findNoteByIdService = async (id) => {
+  return await Note.findById(id);
+}; 
+*/

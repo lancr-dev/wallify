@@ -4,6 +4,7 @@ import {
   getAllNotesService,
   getNoteService,
   updateNoteService,
+  deleteNoteService,
 } from '../services/notesService.js';
 
 export const createNote = async (req, res) => {
@@ -120,7 +121,7 @@ export const updateNote = async (req, res) => {
 export const deleteNote = async (req, res) => {
   try {
     const { id } = req.params;
-    const note = await Note.findById(id);
+    const note = await deleteNoteService(id);
 
     if (!note) {
       return res.status(404).json({
