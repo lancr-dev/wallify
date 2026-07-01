@@ -15,3 +15,9 @@ export const getAllNotesService = async () => {
 
   return notes;
 };
+
+export const getNoteService = async (id) => {
+  const note = await Note.findById(id);
+
+  return note;
+};

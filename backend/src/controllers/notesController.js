@@ -2,6 +2,7 @@ import Note from '../models/WallifyNote.js';
 import {
   createNoteService,
   getAllNotesService,
+  getNoteService,
 } from '../services/notesService.js';
 
 export const createNote = async (req, res) => {
@@ -53,7 +54,7 @@ export const getNote = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const note = await Note.findById(id);
+    const note = await getNoteService(id);
 
     if (!note) {
       return res.status(404).json({
