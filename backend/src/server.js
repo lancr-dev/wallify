@@ -8,6 +8,8 @@ import authRoutes from './routes/authRoutes.js';
 import noteRoutes from './routes/noteRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 
+import errorHandler from './middleware/errorMiddleware.js';
+
 dotenv.config();
 
 const app = express();
@@ -20,6 +22,8 @@ app.use(cookieParser());
 app.use('/api/auth', authRoutes);
 app.use('/api/note', noteRoutes);
 app.use('/api/profile', userRoutes);
+
+app.use(errorHandler);
 
 app.get('/', (req, res) => {
   res.status(200).json({

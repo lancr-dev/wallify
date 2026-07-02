@@ -41,8 +41,18 @@ export const updateNoteService = async (id, title, content, currentUser) => {
   return note;
 };
 
-export const deleteNoteService = async (id) => {
+export const deleteNoteService = async (id, currentUser) => {
   const note = await Note.findById(id);
+
+  if (!note) {
+    return null;
+  }
+
+  if (!note.owner.equals(currentUser.id) && currentUser.role !== 'admin') {
+    throw new Error('FORBIDDEN.');
+  }
+
+  await note.deleteOne();
 
   return note;
 };

@@ -1,4 +1,3 @@
-import Note from '../models/WallifyNote.js';
 import {
   createNoteService,
   getAllNotesService,
@@ -6,147 +5,98 @@ import {
   updateNoteService,
   deleteNoteService,
 } from '../services/notesService.js';
+import asyncHandler from '../utils/asyncHandler.js';
 
-export const createNote = async (req, res) => {
-  try {
-    const { title, content } = req.body;
+export const createNote = asyncHandler(async (req, res) => {
+  const { title, content } = req.body;
 
-    if (!title || !content) {
-      return res.status(400).json({
-        success: false,
-        message: 'Title and Content are required.',
-      });
-    }
-
-    const note = await createNoteService({
-      title,
-      content,
-      owner: req.user.id,
-    });
-
-    return res.status(201).json({
-      success: true,
-      data: note,
-    });
-  } catch (error) {
-    return res.status(500).json({
+  if (!title || !content) {
+    return res.status(400).json({
       success: false,
-      message: `Error in createNote controller: ${error.message}`,
+      message: 'Title and Content are required.',
     });
   }
-};
 
-export const getAllNotes = async (req, res) => {
-  try {
-    const notes = await getAllNotesService();
+  const note = await createNoteService({
+    title,
+    content,
+    owner: req.user.id,
+  });
 
-    return res.status(200).json({
-      success: true,
-      data: notes,
-    });
-  } catch (error) {
-    return res.status(500).json({
+  return res.status(201).json({
+    success: true,
+    data: note,
+  });
+});
+
+export const getAllNotes = asyncHandler(async (req, res) => {
+  const notes = await getAllNotesService();
+
+  return res.status(200).json({
+    success: true,
+    data: notes,
+  });
+});
+
+export const getNote = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const note = await getNoteService(id);
+
+  if (!note) {
+    return res.status(404).json({
       success: false,
-      message: `Error in getAllNotes controller: ${error.message}`,
+      message: 'Note not found.',
     });
   }
-};
 
-export const getNote = async (req, res) => {
-  try {
-    const { id } = req.params;
+  return res.status(200).json({
+    success: true,
+    data: note,
+  });
+});
 
-    const note = await getNoteService(id);
+export const updateNote = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { title, content } = req.body;
 
-    if (!note) {
-      return res.status(404).json({
-        success: false,
-        message: 'Note not found.',
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      data: note,
-    });
-  } catch (error) {
-    res.status(500).json({
+  if (!title || !content) {
+    return res.status(400).json({
       success: false,
-      message: `Error in getNote controller: ${error.message};`,
+      message: 'Title and Content are required.',
     });
   }
-};
 
-export const updateNote = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { title, content } = req.body;
+  const note = await updateNoteService(id, title, content, req.user);
 
-    if (!title || !content) {
-      return res.status(400).json({
-        success: false,
-        message: 'Title and Content are required.',
-      });
-    }
-
-    const note = await updateNoteService(id, title, content, req.user);
-
-    if (!note) {
-      return res.status(404).json({
-        success: false,
-        message: 'Note not found.',
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: 'Wallify updated successfully.',
-      data: note,
-    });
-  } catch (error) {
-    if (error.message === 'FORBIDDEN') {
-      return res.status(403).json({
-        success: false,
-        message: 'Forbidden.',
-      });
-    }
-
-    return res.status(500).json({
+  if (!note) {
+    return res.status(404).json({
       success: false,
-      message: `Error in updateNote controller: ${error.message}`,
+      message: 'Note not found.',
     });
   }
-};
 
-export const deleteNote = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const note = await deleteNoteService(id);
+  return res.status(200).json({
+    success: true,
+    message: 'Wallify updated successfully.',
+    data: note,
+  });
+});
 
-    if (!note) {
-      return res.status(404).json({
-        success: false,
-        message: 'Note not found.',
-      });
-    }
+export const deleteNote = asyncHandler(async (req, res) => {
+  const { id } = req.params;
 
-    if (!note.owner.equals(req.user.id) && req.user.role !== 'admin') {
-      return res.status(403).json({
-        success: false,
-        message: 'Forbidden.',
-      });
-    }
+  const note = await deleteNoteService(id, req.user);
 
-    await note.deleteOne();
-
-    return res.status(200).json({
-      success: true,
-      message: 'Note deleted successfully.',
-    });
-  } catch (error) {
-    return res.status(500).json({
+  if (!note) {
+    return res.status(404).json({
       success: false,
-      message: `Error in deleteNote controller: ${error.message}`,
+      message: 'Note not found.',
     });
   }
-};
+
+  return res.status(200).json({
+    success: true,
+    message: 'Note deleted successfully.',
+  });
+});
