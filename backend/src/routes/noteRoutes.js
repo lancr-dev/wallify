@@ -12,9 +12,9 @@ import { protect } from '../middleware/authMiddleware.js';
 const router = express.Router();
 
 router.post('/', rateLimit(notesLimiter), protect, createNote);
-router.get('/', rateLimit(notesLimiter), getAllNotes);
+router.get('/', rateLimit(notesLimiter), protect, getAllNotes);
 
-router.get('/:id', rateLimit(notesLimiter), getNote);
+router.get('/:id', rateLimit(notesLimiter), protect, getNote);
 router.put('/:id', rateLimit(notesLimiter), protect, updateNote);
 router.delete('/:id', rateLimit(notesLimiter), protect, deleteNote);
 
