@@ -5,6 +5,7 @@ import {
   getProfileService,
   getUsersProfileService,
   getAllProfileService,
+  updateProfileService,
 } from '../services/userService.js';
 
 export const getProfile = async (req, res) => {
@@ -94,7 +95,7 @@ export const updateProfile = async (req, res) => {
     if (username.length < 3) {
       return res.status(400).json({
         success: false,
-        message: 'Username characters must be at least 3.',
+        message: 'Username must be at least 3 characters.',
       });
     }
 
@@ -105,7 +106,10 @@ export const updateProfile = async (req, res) => {
       });
     }
 
-    const user = await User.findById(req.user.id);
+    const user = await updateProfileService(req.user.id, {
+      username: username.trim(),
+      email: formattedEmail,
+    });
 
     if (!user) {
       return res.status(404).json({
@@ -113,20 +117,6 @@ export const updateProfile = async (req, res) => {
         message: 'User not found',
       });
     }
-
-    const existingUser = await User.findOne({ email: formattedEmail });
-
-    if (existingUser && existingUser._id.toString() !== req.user.id) {
-      return res.status(409).json({
-        success: false,
-        message: 'Email already exists.',
-      });
-    }
-
-    user.username = username.trim();
-    user.email = formattedEmail;
-
-    await user.save();
 
     return res.status(200).json({
       success: true,
@@ -139,6 +129,13 @@ export const updateProfile = async (req, res) => {
       },
     });
   } catch (error) {
+    if (error.message === 'EMAIL_EXISTS') {
+      return res.status(409).json({
+        success: false,
+        message: 'Email already exists.',
+      });
+    }
+
     return res.status(500).json({
       success: false,
       message: `Error in updateProfile controller: ${error.message}`,

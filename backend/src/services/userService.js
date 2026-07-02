@@ -17,3 +17,27 @@ export const getAllProfileService = async () => {
 
   return users;
 };
+
+export const updateProfileService = async (userId, updateData) => {
+  const user = await User.findById(userId);
+
+  if (!user) {
+    return null;
+  }
+
+  const existingUser = await User.findOne({
+    email: updateData.email,
+    _id: { $ne: userId },
+  });
+
+  if (existingUser) {
+    throw new Error('EMAIL_EXISTS');
+  }
+
+  user.username = updateData.username;
+  user.email = updateData.email;
+
+  await user.save();
+
+  return user;
+};
