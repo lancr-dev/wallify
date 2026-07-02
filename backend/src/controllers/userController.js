@@ -1,7 +1,10 @@
 import bcrypt from 'bcrypt';
 import User from '../models/WallifyUser.js';
 import mongoose from 'mongoose';
-import { getProfileService } from '../services/userService.js';
+import {
+  getProfileService,
+  getUsersProfileService,
+} from '../services/userService.js';
 
 export const getProfile = async (req, res) => {
   try {
@@ -37,7 +40,7 @@ export const getUsersProfile = async (req, res) => {
       });
     }
 
-    const user = await User.findById(id).select('username role');
+    const user = await getUsersProfileService(id);
 
     if (!user) {
       return res.status(404).json({

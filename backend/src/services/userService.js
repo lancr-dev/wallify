@@ -5,3 +5,9 @@ export const getProfileService = async (id) => {
 
   return user;
 };
+
+export const getUsersProfileService = async (id) => {
+  const user = await User.findById(id).select('username role');
+
+  return user;
+};
