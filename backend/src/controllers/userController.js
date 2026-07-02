@@ -1,10 +1,11 @@
 import bcrypt from 'bcrypt';
 import User from '../models/WallifyUser.js';
 import mongoose from 'mongoose';
+import { getProfileService } from '../services/userService.js';
 
 export const getProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
+    const user = await getProfileService(req.user.id);
 
     if (!user) {
       return res.status(404).json({
