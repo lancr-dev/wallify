@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import User from '../models/WallifyUser.js';
 
 export const getProfileService = async (id) => {
@@ -40,4 +41,25 @@ export const updateProfileService = async (userId, updateData) => {
   await user.save();
 
   return user;
+};
+
+export const changePasswordService = async (
+  userId,
+  currentPassword,
+  newPassword,
+) => {
+  const user = await User.findById(userId).select('+password');
+
+  if (!user) return null;
+
+  const isMatch = await bcrypt.compare(currentPassword, user.password);
+
+  if (!isMatch) {
+    throw new Error('INVALID_PASSWORD');
+  }
+
+  user.password = newPassword;
+  await user.save();
+
+  return true;
 };

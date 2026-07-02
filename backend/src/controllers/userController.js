@@ -6,6 +6,7 @@ import {
   getUsersProfileService,
   getAllProfileService,
   updateProfileService,
+  changePasswordService,
 } from '../services/userService.js';
 
 export const getProfile = async (req, res) => {
@@ -154,10 +155,10 @@ export const changePassword = async (req, res) => {
       });
     }
 
-    if (password.length < 5) {
+    if (newPassword.length < 5) {
       return res.status(400).json({
         success: false,
-        message: 'Please use a strong password.',
+        message: 'Please use a stronger password.',
       });
     }
 
@@ -168,30 +169,17 @@ export const changePassword = async (req, res) => {
       });
     }
 
-    const user = await User.findById(req.user.id).select('+password');
-
-    if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: 'User not found',
-      });
+    try {
+      await changePasswordService(req.user.id, currentPassword, newPassword);
+    } catch (error) {
+      if (error.message === 'INVALID_PASSWORD') {
+        return res.status(401).json({
+          success: false,
+          message: 'Current password is incorrect.',
+        });
+      }
+      throw error;
     }
-
-    const isPasswordMatch = await bcrypt.compare(
-      currentPassword,
-      user.password,
-    );
-
-    if (!isPasswordMatch) {
-      return res.status(401).json({
-        success: false,
-        message: 'Current password is incorrect.',
-      });
-    }
-
-    user.password = newPassword;
-
-    await user.save();
 
     return res.status(200).json({
       success: true,
