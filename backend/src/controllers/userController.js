@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import {
   getProfileService,
   getUsersProfileService,
+  getAllProfileService,
 } from '../services/userService.js';
 
 export const getProfile = async (req, res) => {
@@ -57,6 +58,22 @@ export const getUsersProfile = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: `Error in getUsersProfile controller: ${error.message}`,
+    });
+  }
+};
+
+export const getAllUserProfile = async (req, res) => {
+  try {
+    const users = await getAllProfileService();
+
+    res.status(200).json({
+      success: true,
+      data: users,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `Error in getAllUserProfile controller: ${error.message}`,
     });
   }
 };

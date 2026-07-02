@@ -11,3 +11,9 @@ export const getUsersProfileService = async (id) => {
 
   return user;
 };
+
+export const getAllProfileService = async () => {
+  const users = await User.find().sort().select('-password');
+
+  return users;
+};
