@@ -8,7 +8,21 @@ const errorHandler = (err, req, res, next) => {
     });
   }
 
-  res.status(err.statusCode || 500).json({
+  if (err.message === 'EMAIL_EXISTS') {
+    return res.status(409).json({
+      success: false,
+      message: 'Email already exists.',
+    });
+  }
+
+  if (err.message === 'INVALID_PASSWORD') {
+    return res.status(401).json({
+      success: false,
+      message: 'Current password is incorrect.',
+    });
+  }
+
+  return res.status(err.statusCode || 500).json({
     success: false,
     message: err.message || 'Internal Server Error',
   });
