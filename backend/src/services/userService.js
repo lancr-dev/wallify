@@ -13,8 +13,8 @@ export const getUsersProfileService = async (id) => {
   return user;
 };
 
-export const getAllProfileService = async () => {
-  const users = await User.find().sort().select('-password');
+export const getAllUserProfileService = async () => {
+  const users = await User.find().sort().select('-email -password');
 
   return users;
 };
@@ -50,7 +50,9 @@ export const changePasswordService = async (
 ) => {
   const user = await User.findById(userId).select('+password');
 
-  if (!user) return null;
+  if (!user) {
+    return null;
+  }
 
   const isMatch = await bcrypt.compare(currentPassword, user.password);
 
@@ -61,5 +63,5 @@ export const changePasswordService = async (
   user.password = newPassword;
   await user.save();
 
-  return true;
+  return user;
 };

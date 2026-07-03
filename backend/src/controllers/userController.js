@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import {
   getProfileService,
   getUsersProfileService,
-  getAllProfileService,
+  getAllUserProfileService,
   updateProfileService,
   changePasswordService,
 } from '../services/userService.js';
@@ -50,7 +50,7 @@ export const getUsersProfile = asyncHandler(async (req, res) => {
 });
 
 export const getAllUserProfile = asyncHandler(async (req, res) => {
-  const users = await getAllProfileService();
+  const users = await getAllUserProfileService();
 
   res.status(200).json({
     success: true,
