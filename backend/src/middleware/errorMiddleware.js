@@ -22,6 +22,13 @@ const errorHandler = (err, req, res, next) => {
     });
   }
 
+  if (err.message === 'INVALID_CREDENTIALS') {
+    return res.status(401).json({
+      success: false,
+      message: 'Invalid email or password.',
+    });
+  }
+
   return res.status(err.statusCode || 500).json({
     success: false,
     message: err.message || 'Internal Server Error',
