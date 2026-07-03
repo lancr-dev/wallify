@@ -106,12 +106,6 @@ export const updateProfile = asyncHandler(async (req, res) => {
       role: user.role,
     },
   });
-  if (error.message === 'EMAIL_EXISTS') {
-    return res.status(409).json({
-      success: false,
-      message: 'Email already exists.',
-    });
-  }
 });
 
 export const changePassword = asyncHandler(async (req, res) => {
@@ -138,16 +132,17 @@ export const changePassword = asyncHandler(async (req, res) => {
     });
   }
 
-  try {
-    await changePasswordService(req.user.id, currentPassword, newPassword);
-  } catch (error) {
-    if (error.message === 'INVALID_PASSWORD') {
-      return res.status(401).json({
-        success: false,
-        message: 'Current password is incorrect.',
-      });
-    }
-    throw error;
+  const result = await changePasswordService(
+    req.user.id,
+    currentPassword,
+    newPassword,
+  );
+
+  if (!result) {
+    return res.status(404).json({
+      success: false,
+      message: 'User not found.',
+    });
   }
 
   return res.status(200).json({
