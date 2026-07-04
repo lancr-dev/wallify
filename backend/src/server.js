@@ -4,6 +4,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
 import { logger, logtail } from './config/logger.js';
+import requestLogger from './middleware/requestLogger.js';
 
 import connectMongoDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
@@ -20,6 +21,8 @@ const PORT = process.env.PORT;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+app.use(requestLogger);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/note', noteRoutes);
