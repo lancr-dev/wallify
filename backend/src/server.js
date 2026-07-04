@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
+import { logger, logtail } from './config/logger.js';
+
 import connectMongoDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import noteRoutes from './routes/noteRoutes.js';
@@ -38,11 +40,22 @@ const startServer = async () => {
 
     app.listen(PORT, () => {
       console.log(`Server is running on PORT: ${PORT}`);
+      logger.info('Wallify backend started.');
     });
   } catch (error) {
     console.error(`Server connection failed: ${error.message}`);
+    logger.error(`Server connection failed: ${error.message}`);
     process.exit(1);
   }
 };
 
 startServer();
+
+const shutdown = async () => {
+  logger.info('Shutting down server...');
+  await logtail.flush();
+  process.exit(0);
+};
+
+process.on('SIGINT', shutdown);
+process.on('SIGTERM', shutdown);
