@@ -1,5 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
+import ProtectedRoute from './ProtectedRoute';
+import PublicRoute from './PublicRoute';
+
 import Register from '../pages/auth/Register';
 import Login from '../pages/auth/Login';
 
@@ -19,15 +22,68 @@ function AppRoutes() {
     <Routes>
       <Route path='/' element={<Navigate to='/register' replace />} />
 
-      <Route path='/register' element={<Register />} />
-      <Route path='/login' element={<Login />} />
+      <Route
+        path='/register'
+        element={
+          <PublicRoute>
+            <Register />
+          </PublicRoute>
+        }
+      />
 
-      <Route path='/wallify-feed' element={<WallifyFeed />} />
-      <Route path='/my-wallifies' element={<MyWallifies />} />
-      <Route path='/wallify-users' element={<WallifyUsers />} />
+      <Route
+        path='/login'
+        element={
+          <PublicRoute>
+            <Login />
+          </PublicRoute>
+        }
+      />
 
-      <Route path='/view-profile' element={<ViewMyProfile />} />
-      <Route path='/change-password' element={<ChangePassword />} />
+      <Route
+        path='/wallify-feed'
+        element={
+          <ProtectedRoute>
+            <WallifyFeed />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path='/my-wallifies'
+        element={
+          <ProtectedRoute>
+            <MyWallifies />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path='/wallify-users'
+        element={
+          <ProtectedRoute>
+            <WallifyUsers />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path='/view-profile'
+        element={
+          <ProtectedRoute>
+            <ViewMyProfile />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path='/change-password'
+        element={
+          <ProtectedRoute>
+            <ChangePassword />
+          </ProtectedRoute>
+        }
+      />
 
       <Route path='/need-help' element={<NeedHelp />} />
 
