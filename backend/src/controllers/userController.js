@@ -101,7 +101,7 @@ export const updateProfile = asyncHandler(async (req, res) => {
     message: 'Profile updated successfully',
     data: {
       id: user._id,
-      name: user.username,
+      username: user.username,
       email: user.email,
       role: user.role,
     },

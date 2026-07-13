@@ -7,17 +7,19 @@ export const createNoteService = async ({ title, content, owner }) => {
     owner,
   });
 
-  return note;
+  return await note.populate('owner', 'username role');
 };
 
 export const getAllNotesService = async () => {
-  const notes = await Note.find().sort({ createdAt: -1 });
+  const notes = await Note.find()
+    .populate('owner', 'username role')
+    .sort({ createdAt: -1 });
 
   return notes;
 };
 
 export const getNoteService = async (id) => {
-  const note = await Note.findById(id);
+  const note = await Note.findById(id).populate('owner', 'username role');
 
   return note;
 };
@@ -38,7 +40,7 @@ export const updateNoteService = async (id, title, content, currentUser) => {
 
   await note.save();
 
-  return note;
+  return await note.populate('owner', 'username role');
 };
 
 export const deleteNoteService = async (id, currentUser) => {
