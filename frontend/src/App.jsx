@@ -1,5 +1,7 @@
+import Register from './pages/auth/Register';
+
 function App() {
-  return <h1>Wallify</h1>;
+  return <Register />;
 }
 
 export default App;

@@ -1,0 +1,213 @@
+.register-page {
+  position: relative;
+  min-height: 100vh;
+  padding: clamp(1.5rem, 4vw, 3rem);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #ffffff;
+}
+
+.wallify-logo {
+  position: absolute;
+  top: clamp(1.5rem, 4vw, 3rem);
+  left: clamp(1.5rem, 4vw, 3rem);
+
+  width: clamp(3rem, 5vw, 3.5rem);
+  aspect-ratio: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 50%;
+  background-color: #4f89c5;
+}
+
+.wallify-logo span {
+  color: #ffffff;
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  font-weight: 500;
+}
+
+.need-help-link {
+  position: absolute;
+  top: clamp(1.5rem, 4vw, 3rem);
+  right: clamp(1.5rem, 4vw, 3rem);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  padding: 0.8rem 1rem;
+
+  background-color: #4f89c5;
+  color: #ffffff;
+
+  text-decoration: none;
+  border-radius: 0.4rem;
+
+  transition: background-color 0.2s ease;
+}
+
+.need-help-link:hover {
+  background-color: #3d73ab;
+}
+
+.register-container {
+  width: min(100%, 700px);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.register-heading {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 500;
+  text-align: center;
+  color: #343434;
+}
+
+.register-card {
+  width: 100%;
+
+  padding: clamp(2rem, 4vw, 3rem);
+
+  background-color: #cfe6ff;
+  border-radius: 1.5rem;
+}
+
+.register-card-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.register-card-header h2 {
+  margin-bottom: 0.5rem;
+
+  font-size: clamp(2rem, 3vw, 2.5rem);
+  font-weight: 500;
+
+  color: #343434;
+}
+
+.register-card-header p {
+  color: #444;
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-group {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+
+.form-group label {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: #343434;
+}
+
+.form-group input {
+  width: 100%;
+  height: clamp(2.8rem, 5vw, 3.25rem);
+
+  padding: 0 1rem;
+
+  border: none;
+  outline: none;
+
+  font-size: 1rem;
+  border-radius: 0.35rem;
+}
+
+.register-button {
+  margin-top: 1rem;
+
+  width: 100%;
+  height: clamp(3rem, 5vw, 3.5rem);
+
+  border: none;
+  border-radius: 999px;
+
+  background-color: #4f89c5;
+  color: #ffffff;
+
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  cursor: pointer;
+
+  transition: background-color 0.2s ease;
+}
+
+.register-button:hover {
+  background-color: #3d73ab;
+}
+
+.login-text {
+  margin-top: 1.5rem;
+
+  text-align: center;
+  color: #343434;
+}
+
+.login-text a {
+  color: inherit;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .register-page {
+    padding-top: 6rem;
+  }
+
+  .form-group {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .need-help-link {
+    top: 1rem;
+    right: 1rem;
+
+    font-size: 0.9rem;
+    padding: 0.75rem 0.9rem;
+  }
+
+  .wallify-logo {
+    top: 1rem;
+    left: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-card {
+    padding: 1.5rem;
+  }
+
+  .need-help-link {
+    position: static;
+    margin-bottom: 1rem;
+    align-self: flex-end;
+  }
+
+  .wallify-logo {
+    position: static;
+    align-self: flex-start;
+    margin-bottom: 1rem;
+  }
+
+  .register-page {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
