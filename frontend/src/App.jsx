@@ -1,7 +1,11 @@
-import Register from './pages/auth/Register';
+import AppRoutes from './routes/AppRoutes';
+
+import './styles/reset.css';
+import './styles/variables.css';
+import './styles/globals.css';
 
 function App() {
-  return <Register />;
+  return <AppRoutes />;
 }
 
 export default App;
