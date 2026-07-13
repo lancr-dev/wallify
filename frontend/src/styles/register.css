@@ -165,6 +165,11 @@
   font-weight: 600;
 }
 
+.register-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 @media (max-width: 768px) {
   .register-page {
     padding-top: 6rem;
