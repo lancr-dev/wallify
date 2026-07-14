@@ -1,0 +1,30 @@
+.note-card {
+  padding: 1.5rem;
+
+  border-radius: 1rem;
+
+  background-color: var(--color-white);
+}
+
+.note-card-header {
+  margin-bottom: 1rem;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.note-card-header h3 {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-weight: 600;
+}
+
+.note-card-header span {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.note-content {
+  line-height: 1.7;
+  white-space: pre-wrap;
+}

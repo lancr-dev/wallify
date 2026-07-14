@@ -1,0 +1,68 @@
+.sidebar {
+  width: clamp(15rem, 20vw, 18rem);
+  min-height: 100vh;
+  padding: clamp(2rem, 4vw, 3rem);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  background-color: var(--color-white);
+}
+
+.sidebar-logo {
+  margin-bottom: clamp(2rem, 5vw, 3rem);
+}
+
+.sidebar-logo span {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 5vw, 4.5rem);
+  color: var(--color-dark);
+}
+
+.sidebar-navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sidebar-link {
+  padding: 0.9rem 1.5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  text-decoration: none;
+
+  font-size: clamp(1rem, 2vw, 1.3rem);
+  font-weight: 500;
+
+  color: var(--color-white);
+  background-color: var(--color-primary);
+
+  transition: background-color 0.2s ease;
+}
+
+.sidebar-link:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.sidebar-link.active {
+  background-color: var(--color-primary-dark);
+}
+
+.sidebar-description {
+  margin-top: auto;
+  padding-top: 3rem;
+}
+
+.sidebar-description p {
+  line-height: 1.6;
+  font-size: clamp(0.95rem, 1.3vw, 1.1rem);
+  color: var(--color-dark);
+}
+
+.sidebar-description strong {
+  font-weight: 700;
+}

@@ -1,0 +1,25 @@
+.authenticated-layout {
+  min-height: 100vh;
+
+  display: grid;
+  grid-template-columns: clamp(16rem, 20vw, 18rem) 1fr clamp(16rem, 20vw, 18rem);
+
+  background-color: var(--color-background);
+}
+
+.authenticated-content {
+  min-width: 0;
+  padding: clamp(2rem, 4vw, 3rem);
+
+  background-color: var(--color-background);
+}
+
+@media (max-width: 1024px) {
+  .authenticated-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .authenticated-content {
+    order: 2;
+  }
+}
